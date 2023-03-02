@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+  <style>
+    #video {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+  <h1>{{ data }}</h1>
+  <video id="video-player" width="800" autoplay playsinline controls controls></video>
+  <script>
+    var videoPlayer = document.getElementById('video-player');
+    var hls = new Hls();
+    hls.attachMedia(videoPlayer);
+    hls.loadSource("{{ link }}");
+    videoPlayer.play();
+    hls.on(Hls.Events.MANIFEST_LOADED, function(event, data) {
+      document.getElementById('download-button').addEventListener('click', function() {
+        hls.download();
+      });
+    });
+  </script>
+</body>
+</html>
