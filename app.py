@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import requests 
 import json
 from urllib.parse import urlparse
-
+import os
 def get_route(url):
     parsed_url = urlparse(url)
     base_domain = parsed_url.netloc
@@ -14,7 +14,11 @@ def get_route(url):
     return route
 
 def jsongen(url):
-    res = requests.get(url)
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+    "X-Forwarded-For": "IN"
+}
+    res = requests.get(url, headers = headers)
     y = json.loads(res.text)
     return y
 
@@ -59,5 +63,30 @@ def index():
     else:
         return render_template('index.html')
 
+@app.route('/url',methods = ['GET'])
+def url():
+    link = request.args.get("u")
+    try:
+        if not "https" in get_results(link)[0]:
+            data = "https://media-content.akamaized.net/" + get_results(link)[0]
+        else:
+            data = get_results(link)[0]
+    except:
+        data = "Error! Pass the url of page containing player."
+    
+    return data,200
+
+
+@app.route('/log',methods=["GET"])
+def log():
+    ip = request.args.get("ip")
+    route = request.args.get("r")
+    token = os.environ.get("TOKEN")
+    chat = os.environ.get("CHAT")
+    url = f"http://ip-api.com/json/{ip}"
+    data = "mxplayer"+ "\n" + route + "\n" + str(jsongen(url))
+    posturl = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat}&text={data}"
+    requests.get(posturl)
+    return "success!`" 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,60 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Flask App</title>
-  </head>
-  <style>
-    form {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f1f1f1;
-      padding: 20px;
-      border-radius: 30px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    input[type="text"] {
-      padding: 10px;
-      border: none;
-      font-size: 1rem;
-      width: 100%;
-    }
-    
-    input[type="submit"] {
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 0 5px 5px 0;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    
-    input[type="submit"]:hover {
-      background-color: #3e8e41;
-    }
-    
-    @media only screen and (max-width: 600px) {
-     
-      
-      input[type="text"] {
-        width: calc(100% - 50px);
-      }
-      
-      input[type="submit"] {
-        width: 50px;
-      }
-    }
-    
-  </style>
-
-  <body>
-    <h1>Paste the link directly of "player page" of "mxplayer movie or episode" </h1>
-
-    <form method="POST" action="/">
-      <input type="text" name="link">
-      <input type="submit" value="Submit">
-    </form>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+    <h2>mx Video Player</h2>
+    <div class="form-group">
+      <form method="POST" action="/">
+        <label for="video-url">Paste Video URL:</label>
+        <input type="text" id="video-url" placeholder="Enter video URL" name="link">
+        <input type="submit" value="Submit" id="play-btn">
+      </form>
+    </div>
+    <ul>
+      <li>Open <a href="https://www.mxplayer.in">Mx player on web</a> in browser.</li>
+      <li>search your desired content and open its player page.</li>
+      <li>copy the url of page and paste in the box.</li>
+    </ul>
+  </div>
+{% endblock %}
