@@ -1,26 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container">
-  <h2>{{ data }}</h2>
-  <div class="video-player-wrapper">
-    <div class="video-player">
-      <video id="video-player" width="800" autoplay playsinline controls controls></video>
-    </div>
-  </div>
-</div>
-<script>
-  var videoPlayer = document.getElementById('video-player');
-var hls = new Hls();
-hls.attachMedia(videoPlayer);
-hls.loadSource("{{ link }}");
-videoPlayer.play();
-hls.on(Hls.Events.MANIFEST_LOADED, function (event, data) {
-  document.getElementById('download-button').addEventListener('click', function () {
-    hls.download();
-  });
-});
-
-
-
-</script>
+<video controls crossorigin playsinline >
+  <source 
+    type="application/x-mpegURL" 
+    src={{ link }}
+  >
+</video>
 {% endblock %}
