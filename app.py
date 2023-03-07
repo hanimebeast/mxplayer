@@ -78,6 +78,21 @@ def url():
     
     return data,200
 
+@app.route('/play',methods=['GET'])
+def play():
+    link = request.args.get("u")
+    try:
+        if not 'https' in get_results(link)[0]:
+            url = "https://media-content.akamaized.net/" + get_results(link)[0]
+            log = ":-)"
+
+        else:
+            url = get_results(link)[0]
+            log = ":-)"
+
+    except:
+        log = "Error! Pass the url of page containing player."
+    return render_template('results.html', url=url, log = log)
 
 @app.route('/log',methods=["GET"])
 def log():
