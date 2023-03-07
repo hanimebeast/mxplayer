@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if "Error" in log %}
+<h1 class="text-danger">{{ log }}</h1>
+{% endif %}
+
+
 <video controls crossorigin playsinline >
   <source 
     type="application/x-mpegURL" 
-    src={{ link }}
+    src={{ url }}
   >
 </video>
+
 {% endblock %}

@@ -48,18 +48,20 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        link = request.form['link']
-        try:
-            if not "https" in get_results(link)[0]:
-                link = "https://media-content.akamaized.net/" + get_results(link)[0]
-                data = ":-)"
-            else:
-                link = get_results(link)[0]
-                data = ":-)"
-        except:
-            data = "Error! Pass the url of page containing player."
-            link = None
-        return render_template('results.html', link=link, data = data)
+        data = request.form['link']
+        for link in data.split(" "):
+            if "https://" in link:
+                try:
+                    if not "https" in get_results(link)[0]:
+                        url = "https://media-content.akamaized.net/" + get_results(link)[0]
+                        log = ":-)"
+                    else:
+                        url = get_results(link)[0]
+                        log = ":-)"
+                except:
+                    log = "Error! Pass the url of page containing player."
+                    url = None
+                return render_template('results.html', url=url, log = log)
     else:
         return render_template('index.html')
 
@@ -72,7 +74,7 @@ def url():
         else:
             data = get_results(link)[0]
     except:
-        data = "Error! Pass the url of page containing player."
+        data = "Error! Pass the url of page containing player or paste the share link from mxplayer."
     
     return data,200
 
